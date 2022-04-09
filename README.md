@@ -27,7 +27,7 @@ Practica utilizando las herramientas mediante Proteus.
 -memoria RAM.
 
 <p align="center">
-  <a href="#"><img src="https://alfonsopinel.files.wordpress.com/2013/07/esquina-fallo-caso-1.gif" width="500px"/></a>
+  <a href="#"><img src="https://alfonsopinel.files.wordpress.com/2013/07/esquina-fallo-caso-1.gif" width="250px"/></a>
 </p>
 
 ### Pre-requisitos 📋
