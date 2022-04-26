@@ -45,7 +45,7 @@ En Github
 ## Autores ✒️
 
 * **Alvaro Emmanuel Socop Pérez** - *Estudiante de Ing. Sistemas* - [USAC](https://github.com/Alvaro-SP)
-* **Tomás Alexnader Morales Saquic** - *Estudiante de Ing. Sistemas* - [USAC](:v) 'pendiente'
+* **Tomás Alexnader Morales Saquic** - *Estudiante de Ing. Sistemas* - [USAC](https://github.com/AlejoMora991014)
 * **Rony Ormandy Ortíz Alvarez** - *Estudiante de Ing. Ciencias y Sistemas* - [USAC](https://github.com/OrmandyRony)
 
 
