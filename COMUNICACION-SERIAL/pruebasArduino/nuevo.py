@@ -1,16 +1,32 @@
 # para la comunicacion serial
+from os import system
 import serial
 import time
+import threading
 
 #para la interfaz
 import sys
-from PyQt5 import uic
-from PyQt5.QtCore import Qt
+from PyQt5 import uic,QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication,QMessageBox
 
-arduino = serial.Serial('COM4', 9600)
+arduino = serial.Serial('COM2', 9600)
 time.sleep(2)
+cad_datos = ""
+continuar = True
 
+def revision():
+    global cad_datos
+    try:
+        while continuar:
+            cad_datos  = str(arduino.readline().decode("ascii"))
+            cad_datos = cad_datos.replace(" ","")
+            cad_datos = cad_datos.replace("\n","")
+            cad_datos = cad_datos.strip()
+            time.sleep(.05)
+        if continuar is False:
+            print("es falso")
+    except:
+        print("error")
 
 class ejemplo_GUI(QMainWindow):
 
@@ -32,14 +48,35 @@ class ejemplo_GUI(QMainWindow):
 
         self.reset.clicked.connect(self.reseteo)
         self.jugador_Actual = 1
+        self.jugador_Anterior = 2
+
+        # hilo para la revision
+        self.hilo = threading.Thread(target = revision)
+        self.hilo.start()
+
+    # def closeEvent(self) -> None:
+    #     global continuar
+    #     continuar = False
+    #     return 0
+
+    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
+        global continuar
+        continuar = False
+        return super().closeEvent(a0)
 
     #Primera fila
-
     def B00_(self):
+        global cad_datos
+        # try:
+        #     cad_datos  = arduino.readline().decode("ascii")
+        #     print(cad_datos)
+        # except:
+        #     print("error")
         if self.jugador_Actual == 1:
             self.B00.setText("X")
             self.B00.setStyleSheet("background-color : #00FF32") 
             self.jugador_Actual = 2
+            self.jugador_Anterior = 1
             self.txtJugador.setText("2")
             #metodo envio datos para el jugador 1
             # tablero,posA,posB,posC,FilaSubA,FilaSubB
@@ -50,6 +87,7 @@ class ejemplo_GUI(QMainWindow):
             self.B00.setText("O")
             self.B00.setStyleSheet("background-color : #FF0F00") 
             self.jugador_Actual = 1
+            self.jugador_Anterior = 2
             self.txtJugador.setText("1")
             #metodo envio datos para el jugador 2
             # tablero,FilaSubA,FilaSubB,ColumnaSubA,ColumnaSubB
@@ -64,6 +102,7 @@ class ejemplo_GUI(QMainWindow):
             self.B01.setText("X")
             self.B01.setStyleSheet("background-color : #00FF32") 
             self.jugador_Actual = 2
+            self.jugador_Anterior = 1
             self.txtJugador.setText("2")
             #metodo envio datos para el jugador 1
             # tablero,posA,posB,posC,FilaSubA,FilaSubB
@@ -74,6 +113,7 @@ class ejemplo_GUI(QMainWindow):
             self.B01.setText("O")
             self.B01.setStyleSheet("background-color : #FF0F00") 
             self.jugador_Actual = 1
+            self.jugador_Anterior = 2
             self.txtJugador.setText("1")
             #metodo envio datos para el jugador 2
             # tablero,FilaSubA,FilaSubB,ColumnaSubA,ColumnaSubB
@@ -88,6 +128,7 @@ class ejemplo_GUI(QMainWindow):
             self.B02.setText("X")
             self.B02.setStyleSheet("background-color : #00FF32") 
             self.jugador_Actual = 2
+            self.jugador_Anterior = 1
             self.txtJugador.setText("2")
             #metodo envio datos para el jugador 1
             # tablero,posA,posB,posC,FilaSubA,FilaSubB
@@ -98,6 +139,7 @@ class ejemplo_GUI(QMainWindow):
             self.B02.setText("O")
             self.B02.setStyleSheet("background-color : #FF0F00") 
             self.jugador_Actual = 1
+            self.jugador_Anterior = 2
             self.txtJugador.setText("1")
             #metodo envio datos para el jugador 2
             # tablero,FilaSubA,FilaSubB,ColumnaSubA,ColumnaSubB
@@ -113,6 +155,7 @@ class ejemplo_GUI(QMainWindow):
             self.B10.setText("X")
             self.B10.setStyleSheet("background-color : #00FF32") 
             self.jugador_Actual = 2
+            self.jugador_Anterior = 1
             self.txtJugador.setText("2")
             #metodo envio datos para el jugador 1
             # tablero,posA,posB,posC,FilaSubA,FilaSubB
@@ -123,6 +166,7 @@ class ejemplo_GUI(QMainWindow):
             self.B10.setText("O")
             self.B10.setStyleSheet("background-color : #FF0F00") 
             self.jugador_Actual = 1
+            self.jugador_Anterior = 2
             self.txtJugador.setText("1")
             #metodo envio datos para el jugador 2
             # tablero,FilaSubA,FilaSubB,ColumnaSubA,ColumnaSubB
@@ -137,6 +181,7 @@ class ejemplo_GUI(QMainWindow):
             self.B11.setText("X")
             self.B11.setStyleSheet("background-color : #00FF32") 
             self.jugador_Actual = 2
+            self.jugador_Anterior = 1
             self.txtJugador.setText("2")
             #metodo envio datos para el jugador 1
             # tablero,posA,posB,posC,FilaSubA,FilaSubB
@@ -147,6 +192,7 @@ class ejemplo_GUI(QMainWindow):
             self.B11.setText("O")
             self.B11.setStyleSheet("background-color : #FF0F00") 
             self.jugador_Actual = 1
+            self.jugador_Anterior = 2
             self.txtJugador.setText("1")
             #metodo envio datos para el jugador 2
             # tablero,FilaSubA,FilaSubB,ColumnaSubA,ColumnaSubB
@@ -161,6 +207,7 @@ class ejemplo_GUI(QMainWindow):
             self.B12.setText("X")
             self.B12.setStyleSheet("background-color : #00FF32") 
             self.jugador_Actual = 2
+            self.jugador_Anterior = 1
             self.txtJugador.setText("2")
             #metodo envio datos para el jugador 1
             # tablero,posA,posB,posC,FilaSubA,FilaSubB
@@ -171,6 +218,7 @@ class ejemplo_GUI(QMainWindow):
             self.B12.setText("O")
             self.B12.setStyleSheet("background-color : #FF0F00") 
             self.jugador_Actual = 1
+            self.jugador_Anterior = 2
             self.txtJugador.setText("1")
             #metodo envio datos para el jugador 2
             # tablero,FilaSubA,FilaSubB,ColumnaSubA,ColumnaSubB
@@ -186,6 +234,7 @@ class ejemplo_GUI(QMainWindow):
             self.B20.setText("X")
             self.B20.setStyleSheet("background-color : #00FF32") 
             self.jugador_Actual = 2
+            self.jugador_Anterior = 1
             self.txtJugador.setText("2")
             #metodo envio datos para el jugador 1
             # tablero,posA,posB,posC,FilaSubA,FilaSubB
@@ -196,6 +245,7 @@ class ejemplo_GUI(QMainWindow):
             self.B20.setText("O")
             self.B20.setStyleSheet("background-color : #FF0F00") 
             self.jugador_Actual = 1
+            self.jugador_Anterior = 2
             self.txtJugador.setText("1")
             #metodo envio datos para el jugador 2
             # tablero,FilaSubA,FilaSubB,ColumnaSubA,ColumnaSubB
@@ -210,6 +260,7 @@ class ejemplo_GUI(QMainWindow):
             self.B21.setText("X")
             self.B21.setStyleSheet("background-color : #00FF32") 
             self.jugador_Actual = 2
+            self.jugador_Anterior = 1
             self.txtJugador.setText("2")
             #metodo envio datos para el jugador 1
             # tablero,posA,posB,posC,FilaSubA,FilaSubB
@@ -220,6 +271,7 @@ class ejemplo_GUI(QMainWindow):
             self.B21.setText("O")
             self.B21.setStyleSheet("background-color : #FF0F00") 
             self.jugador_Actual = 1
+            self.jugador_Anterior = 2
             self.txtJugador.setText("1")
             #metodo envio datos para el jugador 2
             # tablero,FilaSubA,FilaSubB,ColumnaSubA,ColumnaSubB
@@ -234,6 +286,7 @@ class ejemplo_GUI(QMainWindow):
             self.B22.setText("X")
             self.B22.setStyleSheet("background-color : #00FF32") 
             self.jugador_Actual = 2
+            self.jugador_Anterior = 1
             self.txtJugador.setText("2")
             #metodo envio datos para el jugador 1
             # tablero,posA,posB,posC,FilaSubA,FilaSubB
@@ -244,6 +297,7 @@ class ejemplo_GUI(QMainWindow):
             self.B22.setText("O")
             self.B22.setStyleSheet("background-color : #FF0F00") 
             self.jugador_Actual = 1
+            self.jugador_Anterior = 2
             self.txtJugador.setText("1")
             #metodo envio datos para el jugador 2
             # tablero,FilaSubA,FilaSubB,ColumnaSubA,ColumnaSubB
@@ -254,55 +308,69 @@ class ejemplo_GUI(QMainWindow):
         self.revision()
 
     def revision(self):
+        global cad_datos
         # primero revisar en linea recta.
-        for i in range(3):
-            if self.arreglo[i][0] == 0 and self.arreglo[i][1] == 0 and self.arreglo[i][2] == 0:
+        if str(cad_datos) == "00000":
+            QMessageBox.information(self, "FIN DE LA PARTIDA","No gana ningun jugador\n\nCadena leida: "+cad_datos)
+            self.reseteo()
+            cad_datos = ""
+            return
+        elif str(cad_datos) == "11111":
+            print("ENTRAMOS")
+            # # ::::::::::::::::::::::::::::::::::::::::::::COMPROBACION EN BASE A PROTEUS::::::::::::::::::::::::::
+            # QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador "+str(self.jugador_Anterior)+" gana la partida.\n\nCadena leida: "+cad_datos)
+            # self.reseteo()
+            # return
+            # # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+            # ::::::::::::::::::::::::::::::::::::::::::::ELIMINAR COMPROBACION LOGICA POR MATRICES::::::::::::::::::::::::::
+            for i in range(3):
+                if self.arreglo[i][0] == 0 and self.arreglo[i][1] == 0 and self.arreglo[i][2] == 0:
+                    # mostrar mensaje J1
+                    QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 1 gana la partida.\n\nCadena leida: "+cad_datos)
+                    self.reseteo()
+                    return
+                elif self.arreglo[i][0] == 1 and self.arreglo[i][1] == 1 and self.arreglo[i][2] == 1:
+                    # mostrar mensaje J2
+                    QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 2 gana la partida.\n\nCadena leida: "+cad_datos)
+                    self.reseteo()
+                    return
+                
+            # ahora con las lineas en vertical
+            for i in range(3):
+                if self.arreglo[0][i] == 0 and self.arreglo[1][i] == 0 and self.arreglo[2][i] == 0:
+                    # mostrar mensaje J1
+                    QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 1 gana la partida.\n\nCadena leida: "+cad_datos)
+                    self.reseteo()
+                    return
+                elif self.arreglo[0][i] == 1 and self.arreglo[1][i] == 1 and self.arreglo[2][i] == 1:
+                    # mostrar mensaje J2
+                    QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 2 gana la partida.\n\nCadena leida: "+cad_datos)
+                    self.reseteo()
+                    return
+            # ahora las diagonales.
+
+            if self.arreglo[0][0] == 0 and self.arreglo[1][1] == 0 and self.arreglo[2][2] == 0:
                 # mostrar mensaje J1
-                QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 1 gana la partida.\n")
+                QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 1 gana la partida.\n\nCadena leida: "+cad_datos)
                 self.reseteo()
                 return
-            elif self.arreglo[i][0] == 1 and self.arreglo[i][1] == 1 and self.arreglo[i][2] == 1:
+            if self.arreglo[0][0] == 1 and self.arreglo[1][1] == 1 and self.arreglo[2][2] == 1:
                 # mostrar mensaje J2
-                QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 2 gana la partida.\n")
+                QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 2 gana la partida.\n\nCadena leida: "+cad_datos)
                 self.reseteo()
                 return
-            
-        # ahora con las lineas en vertical
-        for i in range(3):
-            if self.arreglo[0][i] == 0 and self.arreglo[1][i] == 0 and self.arreglo[2][i] == 0:
+
+            if self.arreglo[0][2] == 0 and self.arreglo[1][1] == 0 and self.arreglo[2][0] == 0:
                 # mostrar mensaje J1
-                QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 1 gana la partida.\n")
+                QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 1 gana la partida.\n\nCadena leida: "+cad_datos)
                 self.reseteo()
                 return
-            elif self.arreglo[0][i] == 1 and self.arreglo[1][i] == 1 and self.arreglo[2][i] == 1:
+
+            if self.arreglo[0][2] == 1 and self.arreglo[1][1] == 1 and self.arreglo[2][0] == 1:
                 # mostrar mensaje J2
-                QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 2 gana la partida.\n")
+                QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 2 gana la partida.\n\nCadena leida: "+cad_datos)
                 self.reseteo()
                 return
-        # ahora las diagonales.
-
-        if self.arreglo[0][0] == 0 and self.arreglo[1][1] == 0 and self.arreglo[2][2] == 0:
-            # mostrar mensaje J1
-            QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 1 gana la partida.\n")
-            self.reseteo()
-            return
-        if self.arreglo[0][0] == 1 and self.arreglo[1][1] == 1 and self.arreglo[2][2] == 1:
-            # mostrar mensaje J2
-            QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 2 gana la partida.\n")
-            self.reseteo()
-            return
-
-        if self.arreglo[0][2] == 0 and self.arreglo[1][1] == 0 and self.arreglo[2][0] == 0:
-            # mostrar mensaje J1
-            QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 1 gana la partida.\n")
-            self.reseteo()
-            return
-
-        if self.arreglo[0][2] == 1 and self.arreglo[1][1] == 1 and self.arreglo[2][0] == 1:
-            # mostrar mensaje J2
-            QMessageBox.information(self, "FIN DE LA PARTIDA","El jugador 2 gana la partida.\n")
-            self.reseteo()
-            return
 
     def reseteo(self):
         self.B00.setText("")
@@ -336,6 +404,7 @@ class ejemplo_GUI(QMainWindow):
         self.B22.setEnabled(True)
 
         self.jugador_Actual = 1
+        self.jugador_Anterior = 2
 
         for i in range(3):
             for j  in range(3):
@@ -347,7 +416,11 @@ class ejemplo_GUI(QMainWindow):
         arduino.write(cadena.encode('ascii'))
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    GUI = ejemplo_GUI()
-    GUI.show()
-    sys.exit(app.exec_())
+    try:
+        app = QApplication(sys.argv)
+        GUI = ejemplo_GUI()
+        GUI.show()
+        sys.exit(app.exec_())
+    except:
+        print("ERROR PRUEBA INICIANDO PRIMERO LOS SIMULADORES, CIERRA ESTE INTENTO E INTENTA NUEVAMENTE")
+        sys.exit()
