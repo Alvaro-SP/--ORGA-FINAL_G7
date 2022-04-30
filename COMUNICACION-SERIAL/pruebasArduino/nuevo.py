@@ -15,7 +15,7 @@ cad_datos = ""
 continuar = True
 
 def revision():
-    global cad_datos
+    global cad_datos,continuar
     try:
         while continuar:
             cad_datos  = str(arduino.readline().decode("ascii"))
@@ -45,6 +45,7 @@ class ejemplo_GUI(QMainWindow):
         self.B20.clicked.connect(self.B20_)
         self.B21.clicked.connect(self.B21_)
         self.B22.clicked.connect(self.B22_)
+        self.B_revision.clicked.connect(self.revision)
 
         self.reset.clicked.connect(self.reseteo)
         self.jugador_Actual = 1
@@ -58,6 +59,9 @@ class ejemplo_GUI(QMainWindow):
     #     global continuar
     #     continuar = False
     #     return 0
+
+    def mostrar(self):
+        QMessageBox.information(self, "FIN DE LA PARTIDA",f"El jugador {self.jugador_Actual} gana la partida.\n\nCadena leida: "+cad_datos)
 
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
         global continuar
@@ -144,6 +148,7 @@ class ejemplo_GUI(QMainWindow):
             #metodo envio datos para el jugador 2
             # tablero,FilaSubA,FilaSubB,ColumnaSubA,ColumnaSubB
             cadena = '1,0,0,1,0'
+            arduino.write(cadena.encode('ascii'))
             self.arreglo[0][2] = 1
         self.B02.setEnabled(False)
         self.revision()
@@ -416,11 +421,11 @@ class ejemplo_GUI(QMainWindow):
         arduino.write(cadena.encode('ascii'))
 
 if __name__ == '__main__':
-    try:
+    # try:
         app = QApplication(sys.argv)
         GUI = ejemplo_GUI()
         GUI.show()
         sys.exit(app.exec_())
-    except:
-        print("ERROR PRUEBA INICIANDO PRIMERO LOS SIMULADORES, CIERRA ESTE INTENTO E INTENTA NUEVAMENTE")
-        sys.exit()
+    # except:
+    #     print("ERROR PRUEBA INICIANDO PRIMERO LOS SIMULADORES, CIERRA ESTE INTENTO E INTENTA NUEVAMENTE")
+    #     sys.exit()
